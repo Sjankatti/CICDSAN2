@@ -15,6 +15,11 @@ pipeline {
             }
         }
 
+        stage('Start App') {
+            steps {
+                bat 'npm start'
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
