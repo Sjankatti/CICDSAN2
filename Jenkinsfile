@@ -15,38 +15,25 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
-
-        stage('Start App') {
-            steps {
-                bat 'npm start'
-            }
-        }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Stop Old Container') {
             steps {
-                script {
-                    sh '''
-                    docker stop $CONTAINER_NAME || true
-                    docker rm $CONTAINER_NAME || true
-                    '''
-                }
+                bat '''
+                docker stop %CONTAINER_NAME% || exit 0
+                docker rm %CONTAINER_NAME% || exit 0
+                '''
             }
         }
 
         stage('Run New Container') {
             steps {
-                sh '''
-                docker run -d -p $PORT:$PORT --name $CONTAINER_NAME $IMAGE_NAME
+                bat '''
+                docker run -d -p %PORT%:%PORT% --name %CONTAINER_NAME% %IMAGE_NAME%
                 '''
             }
         }
