@@ -15,6 +15,12 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+
         stage('Start App') {
             steps {
                 bat 'npm start'
